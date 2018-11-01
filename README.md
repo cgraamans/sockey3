@@ -1,12 +1,10 @@
 # ![alt text](https://raw.githubusercontent.com/cgraamans/sockey/master/client/img/logo48.png "Sockey!") Sockey3
 
-### An Easy, Lightweight, Scalable and Secure Standalone NodeJS/Socket.io MVC Framework for web applications.
+### A Standalone NodeJS/Socket.IO API Framework for web applications.
 
-Sockey is a Server-side socket.io framework, specifically made to divorce server-side and client-side processing.
+Sockey is a Easy, Lightweight, Scalable and Secure Server-side [Socket.IO](https://socket.io) framework, specifically made to divorce server-side and client-side processing for high-end containerized web application deployments.
 
-It is an easy-to-use solution for creating quick standalone server-side web socket applications for all your scalable web development needs. 
-
-
+It is perfect for creating web-socket enabeld web applications by providing a REDIS-ready, MySQL/MariaDB-supported API with JWT/HS256 secured transactions.
 
 ## Getting Started
 
