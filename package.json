@@ -1,0 +1,28 @@
+{
+  "name": " nodejs-socket-framework",
+  "version": "0.0.1",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "npx nodemon bootstrap.js",
+    "test": "mocha"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "babel-core": "^6.26.3",
+    "babel-preset-es2015": "^6.24.1",
+    "crypto-js": "^3.1.9-1",
+    "jsonwebtoken": "^8.1.1",
+    "minimist": "^1.2.0",
+    "mysql": "github:mysqljs/mysql",
+    "owasp-password-strength-test": "^1.3.0",
+    "socket.io": "^2.0.4",
+    "socket.io-redis": "^5.2.0"
+  },
+  "devDependencies": {
+    "mocha": "^5.0.1",
+    "nodemon": "^1.14.12",
+    "should": "^13.2.1"
+  }
+}
