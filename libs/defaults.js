@@ -2,58 +2,70 @@
 const ROUTES = [
 
 		{
-			name:"auth.login",
-			controller:"libs/defaults/auth.user.login.js",
+			name:"app.user.login",
+			controller:"libs/defaults/user.login.js",
 		},
 
 		{
-			name:"auth.register",
-			controller:"libs/defaults/auth.user.register.js",
+			name:"app.user.register",
+			controller:"libs/defaults/user.register.js",
 		},
 		
 		{
-			name:"auth.logout",
-			controller:"libs/defaults/auth.user.logout.js",
+			name:"app.user.logout",
+			controller:"libs/defaults/user.logout.js",
 		},
 		
 		{
-			name:"auth.get.email",
-			controller:"libs/defaults/auth.get.email.js",
+			name:"app.user.email.get",
+			controller:"libs/defaults/user.email.get.js",
 			auth:true,
 		},
 		
 		{
-			name:"auth.set.email",
-			controller:"libs/defaults/auth.set.email.js",
+			name:"app.user.email.set",
+			controller:"libs/defaults/user.email.set.js",
 			auth:true,
 			noRoute:true,
 		},
 		
 		{
-			name:"auth.set.password",
-			controller:"libs/defaults/auth.set.password.js",
-			noRoute:true,
+			name:"app.user.location.set",
+			controller:"libs/defaults/user.location.set.js",
 			auth:true,
-		},
-		
-		{
-			name:"auth.verify.name",
-			controller:"libs/defaults/auth.verify.name.js",
-		},
-		
-		{
-			name:"auth.verify.password",
-			controller:"libs/defaults/auth.verify.password.js",
-			noRoute:true,
-		},
-		
-		{
-			name:"auth.verify.email",
-			controller:"libs/defaults/auth.verify.email.js",
 		},
 
 		{
-			name:"test.access",
+			name:"app.user.location.get",
+			controller:"libs/defaults/user.location.get.js",
+			auth:true,
+		},
+
+		{
+			name:"app.user.password.set",
+			controller:"libs/defaults/user.password.set.js",
+			noRoute:true,
+			auth:true,
+		},
+		
+		{
+			name:"app.verify.name",
+			controller:"libs/defaults/verify.name.js",
+		},
+		
+		{
+			name:"app.verify.password",
+			controller:"libs/defaults/verify.password.js",
+			noRoute:true,
+		},
+		
+		{
+			name:"app.verify.email",
+			controller:"libs/defaults/verify.email.js",
+		},
+
+		{
+			name:"app.test.access",
 			controller:"libs/defaults/test.access.js",
 		},
 

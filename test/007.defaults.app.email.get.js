@@ -11,7 +11,7 @@ var options ={
 
 let userSecret = false;
 let client = false;
-describe("API - DEFAULT - auth.get.email",()=>{
+describe("API - DEFAULT - app.user.email.get",()=>{
 
 	beforeEach(()=>{
 
@@ -36,7 +36,7 @@ describe("API - DEFAULT - auth.get.email",()=>{
 				let name = 'TestUserRegular';
 
 				let emitData = jwt.sign({name:name,password:process.env.TEST_PASSWORD},userSecret);
-				client.emit('auth.login',emitData);
+				client.emit('app.user.login',emitData);
 
 				client.on('auth', authData=>{
 					
@@ -49,8 +49,8 @@ describe("API - DEFAULT - auth.get.email",()=>{
 						_u:authData.user,
 					},userSecret);
 
-					client.emit('auth.get.email',getEmailEmit);
-					client.on('auth.get.email', getEmailEmitData=>{
+					client.emit('app.user.email.get',getEmailEmit);
+					client.on('app.user.email.get', getEmailEmitData=>{
 						
 						let receivedEmailEmitData = jwt.verify(getEmailEmitData,userSecret);
 						should(receivedEmailEmitData).have.property('ok', true);

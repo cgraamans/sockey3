@@ -11,7 +11,7 @@ var options ={
 
 let userSecret = false;
 let client = false;
-describe("API - DEFAULT - api.verify.email",()=>{
+describe("API - DEFAULT - app.user.register",()=>{
 
 	beforeEach(()=>{
 
@@ -33,14 +33,41 @@ describe("API - DEFAULT - api.verify.email",()=>{
 			client.on('init', data=>{
 				
 				userSecret = data.secret;
-				
-				let emitData = jwt.sign({email:'graamans@gmail.com'},userSecret);
-				client.emit('auth.verify.email',emitData);
+				let name = 'deleteThisUser-'+Math.round(Math.random()*1000);
 
-				client.on('auth.verify.email', data=>{
+				let emitData = jwt.sign({name:name,password:process.env.TEST_PASSWORD},userSecret);
+				client.emit('app.user.register',emitData);
+				client.on('auth', data=>{
 					
 					let receivedData = jwt.verify(data,userSecret);
 					should(receivedData).have.property('ok', true);
+					should(receivedData.user).have.property('name',name);
+					done();
+
+				});
+
+			});
+
+		});
+
+	});
+
+	it('fails - invalid credentials', done=>{
+
+		client.on('connect',data=>{
+
+			client.on('init', data=>{
+				
+				userSecret = data.secret;
+				
+				let emitData = jwt.sign({password:'hjh1',},userSecret);
+				client.emit('app.user.register',emitData);
+
+				client.on('app.user.register', data=>{
+					
+					let receivedData = jwt.verify(data,userSecret);
+					should(receivedData).have.property('ok', false);
+					should(receivedData).have.property('msg', 'invalid credentials');
 
 					done();
 
@@ -52,7 +79,7 @@ describe("API - DEFAULT - api.verify.email",()=>{
 
 	});
 
-	it('fails - no tld', done=>{
+	it('fails - user name check (too short)', done=>{
 
 		client.on('connect',data=>{
 
@@ -60,39 +87,14 @@ describe("API - DEFAULT - api.verify.email",()=>{
 				
 				userSecret = data.secret;
 				
-				let emitData = jwt.sign({email:'graamans@gmail.'},userSecret);
-				client.emit('auth.verify.email',emitData);
+				let emitData = jwt.sign({password:process.env.TEST_PASSWORD,name:'ab'},userSecret);
+				client.emit('app.user.register',emitData);
 
-				client.on('auth.verify.email', data=>{
+				client.on('app.user.register', data=>{
 					
 					let receivedData = jwt.verify(data,userSecret);
 					should(receivedData).have.property('ok', false);
-
-					done();
-
-				});
-
-			});
-
-		});
-
-	});
-
-	it('fails - no identifier', done=>{
-
-		client.on('connect',data=>{
-
-			client.on('init', data=>{
-				
-				userSecret = data.secret;
-				
-				let emitData = jwt.sign({email:'@gmail.com'},userSecret);
-				client.emit('auth.verify.email',emitData);
-
-				client.on('auth.verify.email', data=>{
-					
-					let receivedData = jwt.verify(data,userSecret);
-					should(receivedData).have.property('ok', false);
+					should(receivedData).have.property('msg', 'name too short');
 
 					done();
 

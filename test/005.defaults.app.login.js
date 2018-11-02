@@ -11,7 +11,7 @@ var options ={
 
 let userSecret = false;
 let client = false;
-describe("API - DEFAULT - auth.login",()=>{
+describe("API - DEFAULT - app.user.login",()=>{
 
 	beforeEach(()=>{
 
@@ -36,7 +36,7 @@ describe("API - DEFAULT - auth.login",()=>{
 				let name = 'TestUserRegular';
 
 				let emitData = jwt.sign({name:name,password:process.env.TEST_PASSWORD},userSecret);
-				client.emit('auth.login',emitData);
+				client.emit('app.user.login',emitData);
 
 				client.on('auth', authData=>{
 					
@@ -64,7 +64,7 @@ describe("API - DEFAULT - auth.login",()=>{
 				let name = 'TestUserAdmin';
 
 				let emitData = jwt.sign({name:name,password:process.env.TEST_PASSWORD},userSecret);
-				client.emit('auth.login',emitData);
+				client.emit('app.user.login',emitData);
 
 				client.on('auth', authData=>{
 					
@@ -92,7 +92,7 @@ describe("API - DEFAULT - auth.login",()=>{
 				let name = 'noThisUser';
 
 				let emitData = jwt.sign({name:name,password:process.env.TEST_PASSWORD},userSecret);
-				client.emit('auth.login',emitData);
+				client.emit('app.user.login',emitData);
 
 				client.on('auth', authData=>{
 					

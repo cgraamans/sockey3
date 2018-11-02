@@ -52,9 +52,9 @@ describe("API - socket",()=>{
 				userSecret = data.secret;
 
 				let emitData = jwt.sign({ok:true,test:'Hello world.'},userSecret);
-				client.emit('test.access',emitData);
+				client.emit('app.test.access',emitData);
 
-				client.on('test.access', data=>{
+				client.on('app.test.access', data=>{
 
 					let receivedData = jwt.verify(data,userSecret);
 					should(receivedData).have.property('ok', true);

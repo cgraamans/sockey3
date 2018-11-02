@@ -11,7 +11,7 @@ var options ={
 
 let userSecret = false;
 let client = false;
-describe("API - DEFAULT - auth.register",()=>{
+describe("API - DEFAULT - app.verify.name",()=>{
 
 	beforeEach(()=>{
 
@@ -33,41 +33,14 @@ describe("API - DEFAULT - auth.register",()=>{
 			client.on('init', data=>{
 				
 				userSecret = data.secret;
-				let name = 'deleteThisUser-'+Math.round(Math.random()*1000);
+				
+				let emitData = jwt.sign({name:'sn0rsn0rsn0r'},userSecret);
+				client.emit('app.verify.name',emitData);
 
-				let emitData = jwt.sign({name:name,password:process.env.TEST_PASSWORD},userSecret);
-				client.emit('auth.register',emitData);
-				client.on('auth', data=>{
+				client.on('app.verify.name', data=>{
 					
 					let receivedData = jwt.verify(data,userSecret);
 					should(receivedData).have.property('ok', true);
-					should(receivedData.user).have.property('name',name);
-					done();
-
-				});
-
-			});
-
-		});
-
-	});
-
-	it('fails - invalid credentials', done=>{
-
-		client.on('connect',data=>{
-
-			client.on('init', data=>{
-				
-				userSecret = data.secret;
-				
-				let emitData = jwt.sign({password:'hjh1',},userSecret);
-				client.emit('auth.register',emitData);
-
-				client.on('auth.register', data=>{
-					
-					let receivedData = jwt.verify(data,userSecret);
-					should(receivedData).have.property('ok', false);
-					should(receivedData).have.property('msg', 'invalid credentials');
 
 					done();
 
@@ -79,7 +52,7 @@ describe("API - DEFAULT - auth.register",()=>{
 
 	});
 
-	it('fails - user name check (too short)', done=>{
+	it('too short', done=>{
 
 		client.on('connect',data=>{
 
@@ -87,14 +60,68 @@ describe("API - DEFAULT - auth.register",()=>{
 				
 				userSecret = data.secret;
 				
-				let emitData = jwt.sign({password:process.env.TEST_PASSWORD,name:'ab'},userSecret);
-				client.emit('auth.register',emitData);
+				let emitData = jwt.sign({name:'l'},userSecret);
+				client.emit('app.verify.name',emitData);
 
-				client.on('auth.register', data=>{
+				client.on('app.verify.name', data=>{
 					
 					let receivedData = jwt.verify(data,userSecret);
 					should(receivedData).have.property('ok', false);
-					should(receivedData).have.property('msg', 'name too short');
+					should(receivedData).have.property('msg', 'too short');
+
+					done();
+
+				});
+
+			});
+
+		});
+
+	});
+
+	it('too long', done=>{
+
+		client.on('connect',data=>{
+
+			client.on('init', data=>{
+				
+				userSecret = data.secret;
+				
+				let emitData = jwt.sign({name:'lllllllllllllllllllllllllllllllll'},userSecret);
+				client.emit('app.verify.name',emitData);
+
+				client.on('app.verify.name', data=>{
+					
+					let receivedData = jwt.verify(data,userSecret);
+					should(receivedData).have.property('ok', false);
+					should(receivedData).have.property('msg', 'too long');
+
+					done();
+
+				});
+
+			});
+
+		});
+
+	});
+
+	it('invalid', done=>{
+
+		client.on('connect',data=>{
+
+			client.on('init', data=>{
+				
+				userSecret = data.secret;
+				
+				let emitData = jwt.sign({name:'####'},userSecret);
+				client.emit('app.verify.name',emitData);
+
+				client.on('app.verify.name', data=>{
+					
+					let receivedData = jwt.verify(data,userSecret);
+					should(receivedData).have.property('ok', false);
+					should(receivedData).have.property('msg', 'invalid');
 
 					done();
 

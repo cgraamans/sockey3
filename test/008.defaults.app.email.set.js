@@ -11,7 +11,7 @@ var options ={
 
 let userSecret = false;
 let client = false;
-describe("API - DEFAULT - auth.set.email",()=>{
+describe("API - DEFAULT - app.user.email.set",()=>{
 
 	beforeEach(()=>{
 
@@ -37,7 +37,7 @@ describe("API - DEFAULT - auth.set.email",()=>{
 					testEmail = 'test.normalUser@gmail.com';
 
 				let emitData = jwt.sign({name:name,password:process.env.TEST_PASSWORD},userSecret);
-				client.emit('auth.login',emitData);
+				client.emit('app.user.login',emitData);
 
 				client.on('auth', authData=>{
 					
@@ -51,8 +51,8 @@ describe("API - DEFAULT - auth.set.email",()=>{
 						email:testEmail
 					},userSecret);
 
-					client.emit('auth.set.email',getEmailEmit);
-					client.on('auth.set.email', getEmailEmitData=>{
+					client.emit('app.user.email.set',getEmailEmit);
+					client.on('app.user.email.set', getEmailEmitData=>{
 						
 						let receivedEmailEmitData = jwt.verify(getEmailEmitData,userSecret);
 						should(receivedEmailEmitData).have.property('ok', true);
@@ -79,7 +79,7 @@ describe("API - DEFAULT - auth.set.email",()=>{
 					testEmail = 'test.normalUser@gmail.';
 
 				let emitData = jwt.sign({name:name,password:process.env.TEST_PASSWORD},userSecret);
-				client.emit('auth.login',emitData);
+				client.emit('app.user.login',emitData);
 
 				client.on('auth', authData=>{
 					
@@ -93,8 +93,8 @@ describe("API - DEFAULT - auth.set.email",()=>{
 						email:testEmail
 					},userSecret);
 
-					client.emit('auth.set.email',getEmailEmit);
-					client.on('auth.set.email', getEmailEmitData=>{
+					client.emit('app.user.email.set',getEmailEmit);
+					client.on('app.user.email.set', getEmailEmitData=>{
 						
 						let receivedEmailEmitData = jwt.verify(getEmailEmitData,userSecret);
 						should(receivedEmailEmitData).have.property('ok', false);

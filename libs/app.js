@@ -9,8 +9,11 @@ export default class App {
 
 				this.SHA256 = require('crypto-js/sha256');
 				this.jwt = require('jsonwebtoken');
+
 				this.owasp = require('owasp-password-strength-test');
 				this.owasp.config(this.options.APP.OWASP);
+
+				this.argv = require('minimist')(process.argv.slice(2));
 
 			} catch (e) {
 
@@ -425,13 +428,39 @@ export default class App {
 
 		LOG(type,message,isRaw){
 
-			if(isRaw) {
-				console.log(message);	
-			} else {
+			let logIt = false;
+			let typeLevel = 'E';
+			let possibleTypes = ['E','D','I'];
 
-				if(!['E','D','I'].includes(type)) type = E;
-				console.log(new Date(), '>> '+ type + ' >> ',message);
+			if(!possibleTypes.includes(type)) type = 'E';
+
+			if(this.argv.v){
+				logIt = true;
+				if(possibleTypes.includes(this.argv.v)) typeLevel = this.argv.v;
+			}   
+			if(process.env._LOGLEVEL) {
+				logIt = true;
+				if(possibleTypes.includes(process.env._LOGLEVEL)) typeLevel = process.env._LOGLEVEL; 
 			}
+			let doLog = false;
+			if (type === 'E' && logIt && (typeLevel === 'E' || typeLevel === 'D' || typeLevel === 'I')) doLog = true;
+			if (type === 'D' && logIt && (typeLevel === 'D' || typeLevel === 'I')) doLog = true;
+			if (type === 'I' && logIt && typeLevel === 'I') doLog = true;
+
+			if(doLog){
+
+				if(isRaw) {
+
+					console.log(message);
+
+				} else {
+
+					console.log("\x1b[1m" + type + "\x1b[0m - " + new Date +' - ' + message);
+				
+				}
+
+			}
+
 			return;
 
 		}

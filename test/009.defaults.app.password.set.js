@@ -11,7 +11,7 @@ var options ={
 
 let userSecret = false;
 let client = false;
-describe("API - DEFAULT - auth.logout",()=>{
+describe("API - DEFAULT - app.user.password.set",()=>{
 
 	beforeEach(()=>{
 
@@ -26,7 +26,7 @@ describe("API - DEFAULT - auth.logout",()=>{
 
 	});
 
-	it('success - user logged in and out', done=>{
+	it('success - user sets a new password', done=>{
 
 		client.on('connect',data=>{
 
@@ -36,7 +36,7 @@ describe("API - DEFAULT - auth.logout",()=>{
 				let name = 'TestUserRegular';
 
 				let emitData = jwt.sign({name:name,password:process.env.TEST_PASSWORD},userSecret);
-				client.emit('auth.login',emitData);
+				client.emit('app.user.login',emitData);
 
 				client.on('auth', authData=>{
 					
@@ -45,15 +45,16 @@ describe("API - DEFAULT - auth.logout",()=>{
 					should(receivedData.user).have.property('name',name);
 					should(receivedData.user).have.property('auth',0);
 
-					let logoutEmit = jwt.sign({
+					let setPasswordData = jwt.sign({
 						_u:authData.user,
+						password:process.env.TEST_PASSWORD
 					},userSecret);
 
-					client.emit('auth.logout',logoutEmit);
-					client.on('auth.logout', logoutData=>{
-						
-						let receivedLogoutData = jwt.verify(logoutData,userSecret);
-						should(receivedLogoutData).have.property('ok', true);
+					client.emit('app.user.password.set',setPasswordData);
+					client.on('app.user.password.set', getPwdData=>{
+
+						let receivedPwdData = jwt.verify(getPwdData,userSecret);
+						should(receivedPwdData).have.property('ok', true);
 						done();
 						
 					});

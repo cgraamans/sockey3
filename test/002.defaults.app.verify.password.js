@@ -11,7 +11,7 @@ var options ={
 
 let userSecret = false;
 let client = false;
-describe("API - DEFAULT - auth.verify.password",()=>{
+describe("API - DEFAULT - app.verify.password",()=>{
 
 	beforeEach(()=>{
 
@@ -35,9 +35,9 @@ describe("API - DEFAULT - auth.verify.password",()=>{
 				userSecret = data.secret;
 				
 				let emitData = jwt.sign({password:'!1234567Ass'},userSecret);
-				client.emit('auth.verify.password',emitData);
+				client.emit('app.verify.password',emitData);
 
-				client.on('auth.verify.password', data=>{
+				client.on('app.verify.password', data=>{
 					
 					let receivedData = jwt.verify(data,userSecret);
 					should(receivedData).have.property('ok', true);
@@ -61,9 +61,9 @@ describe("API - DEFAULT - auth.verify.password",()=>{
 				userSecret = data.secret;
 				
 				let emitData = jwt.sign({password:'!1234SDAa'},userSecret);
-				client.emit('auth.verify.password',emitData);
+				client.emit('app.verify.password',emitData);
 
-				client.on('auth.verify.password', data=>{
+				client.on('app.verify.password', data=>{
 					
 					let receivedData = jwt.verify(data,userSecret);
 					should(receivedData).have.property('ok', false);
@@ -89,9 +89,9 @@ describe("API - DEFAULT - auth.verify.password",()=>{
 				userSecret = data.secret;
 				
 				let emitData = jwt.sign({password:'1231231231A!'},userSecret);
-				client.emit('auth.verify.password',emitData);
+				client.emit('app.verify.password',emitData);
 
-				client.on('auth.verify.password', data=>{
+				client.on('app.verify.password', data=>{
 					
 					let receivedData = jwt.verify(data,userSecret);
 					should(receivedData).have.property('ok', false);
@@ -116,9 +116,9 @@ describe("API - DEFAULT - auth.verify.password",()=>{
 				userSecret = data.secret;
 				
 				let emitData = jwt.sign({password:'1231231231a!'},userSecret);
-				client.emit('auth.verify.password',emitData);
+				client.emit('app.verify.password',emitData);
 
-				client.on('auth.verify.password', data=>{
+				client.on('app.verify.password', data=>{
 					
 					let receivedData = jwt.verify(data,userSecret);
 					should(receivedData).have.property('ok', false);
@@ -143,9 +143,9 @@ describe("API - DEFAULT - auth.verify.password",()=>{
 				userSecret = data.secret;
 				
 				let emitData = jwt.sign({password:'1231231231aA'},userSecret);
-				client.emit('auth.verify.password',emitData);
+				client.emit('app.verify.password',emitData);
 
-				client.on('auth.verify.password', data=>{
+				client.on('app.verify.password', data=>{
 					
 					let receivedData = jwt.verify(data,userSecret);
 					should(receivedData).have.property('ok', false);

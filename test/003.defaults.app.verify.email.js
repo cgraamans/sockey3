@@ -11,7 +11,7 @@ var options ={
 
 let userSecret = false;
 let client = false;
-describe("API - DEFAULT - auth.verify.name",()=>{
+describe("API - DEFAULT - app.verify.email",()=>{
 
 	beforeEach(()=>{
 
@@ -34,10 +34,10 @@ describe("API - DEFAULT - auth.verify.name",()=>{
 				
 				userSecret = data.secret;
 				
-				let emitData = jwt.sign({name:'sn0rsn0rsn0r'},userSecret);
-				client.emit('auth.verify.name',emitData);
+				let emitData = jwt.sign({email:'graamans@gmail.com'},userSecret);
+				client.emit('app.verify.email',emitData);
 
-				client.on('auth.verify.name', data=>{
+				client.on('app.verify.email', data=>{
 					
 					let receivedData = jwt.verify(data,userSecret);
 					should(receivedData).have.property('ok', true);
@@ -52,7 +52,7 @@ describe("API - DEFAULT - auth.verify.name",()=>{
 
 	});
 
-	it('too short', done=>{
+	it('fails - no tld', done=>{
 
 		client.on('connect',data=>{
 
@@ -60,14 +60,13 @@ describe("API - DEFAULT - auth.verify.name",()=>{
 				
 				userSecret = data.secret;
 				
-				let emitData = jwt.sign({name:'l'},userSecret);
-				client.emit('auth.verify.name',emitData);
+				let emitData = jwt.sign({email:'graamans@gmail.'},userSecret);
+				client.emit('app.verify.email',emitData);
 
-				client.on('auth.verify.name', data=>{
+				client.on('app.verify.email', data=>{
 					
 					let receivedData = jwt.verify(data,userSecret);
 					should(receivedData).have.property('ok', false);
-					should(receivedData).have.property('msg', 'too short');
 
 					done();
 
@@ -79,7 +78,7 @@ describe("API - DEFAULT - auth.verify.name",()=>{
 
 	});
 
-	it('too long', done=>{
+	it('fails - no identifier', done=>{
 
 		client.on('connect',data=>{
 
@@ -87,41 +86,13 @@ describe("API - DEFAULT - auth.verify.name",()=>{
 				
 				userSecret = data.secret;
 				
-				let emitData = jwt.sign({name:'lllllllllllllllllllllllllllllllll'},userSecret);
-				client.emit('auth.verify.name',emitData);
+				let emitData = jwt.sign({email:'@gmail.com'},userSecret);
+				client.emit('app.verify.email',emitData);
 
-				client.on('auth.verify.name', data=>{
+				client.on('app.verify.email', data=>{
 					
 					let receivedData = jwt.verify(data,userSecret);
 					should(receivedData).have.property('ok', false);
-					should(receivedData).have.property('msg', 'too long');
-
-					done();
-
-				});
-
-			});
-
-		});
-
-	});
-
-	it('invalid', done=>{
-
-		client.on('connect',data=>{
-
-			client.on('init', data=>{
-				
-				userSecret = data.secret;
-				
-				let emitData = jwt.sign({name:'####'},userSecret);
-				client.emit('auth.verify.name',emitData);
-
-				client.on('auth.verify.name', data=>{
-					
-					let receivedData = jwt.verify(data,userSecret);
-					should(receivedData).have.property('ok', false);
-					should(receivedData).have.property('msg', 'invalid');
 
 					done();
 
