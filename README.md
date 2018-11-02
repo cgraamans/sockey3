@@ -66,10 +66,8 @@ The API guide denotes reserved endpoints and default API endpoints.
 ### Reserved endpoints
 
 ```
-init 			// initial connection handshake
-auth 			// authorization messages
-_u 				// user's auth object
-_user
+init 						// initial connection handshake
+auth 						// authorization messages
 ```
 
 ### Default API endpoints
@@ -77,18 +75,18 @@ _user
 These are the available api endpoints you can trigger with socket emits.
 
 ```
-app.test.access
-app.verify.password
-app.verify.name
-app.verify.email
-app.user.login
-app.user.register
-app.user.logout
-app.user.email.set
-app.user.email.get
-app.user.password.set
-app.user.location.get
-app.user.location.set
+app.test.access 			// check socket return value
+app.verify.password 		// verify password string with OWASP
+app.verify.name 			// verify user name string
+app.verify.email 			// verify user email string
+app.user.login 				// create session for user
+app.user.register 			// create user and login
+app.user.logout 			// destroy session for user
+app.user.email.set 			// set user email
+app.user.email.get 			// get user email
+app.user.password.set 		// set user password
+app.user.location.get 		// get user location
+app.user.location.set 		// set user location
 ```
 
 ## License
