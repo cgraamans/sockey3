@@ -33,6 +33,12 @@ export _DB="sockey3"
 export TEST_PASSWORD=""
 ```
 
+Import the mysql schema into the database you've created for this project
+
+```
+mysql -u[username] -p[password] [databasename] < init/mysql/base.sql
+```
+
 Install npm packages
 
 ```
@@ -53,6 +59,213 @@ Run the tests with mocha
 npm test
 ```
 
+## API guide
+
+The API guide denotes reserved endpoints and default API endpoints.
+
+### Reserved endpoints
+
+```
+init 			// initial connection handshake
+auth 			// authorization messages
+_u 				// user's auth object
+_user
+```
+
+### Default API endpoints
+
+These are the available api endpoints you can trigger with socket emits.
+
+#### app.test.access
+
+Basic test for API access.
+
+`{name:string}`
+
+Returns: **app.test.access**
+
+```
+ok:boolean
+msg:string			// Hello world
+```
+
+#### app.verify.password
+
+Verify user's Password
+
+`{password:string}`
+
+Returns: **app.verify.password**
+
+```
+ok:true
+```
+
+Returns: **app.verify.password**
+
+```
+ok:false
+msg:array			// any generated error from owasp
+?e:error			// runtime errors
+```
+
+#### app.verify.name
+
+Verify user's name
+
+`{name:string}`
+
+Returns: **app.verify.name**
+
+```
+ok:true
+```
+
+Returns: **app.verify.name**
+
+```
+ok:false
+msg:array			// any generated error from password verification
+?e:error			// runtime errors
+```
+
+#### app.verify.email
+
+Verify Email Address
+
+`{email:string}`
+
+Returns: **app.verify.email**
+
+```
+ok:boolean
+```
+
+#### app.user.login
+
+Login User
+
+`{name:string,password:string} || {apiId:string,token:string} `
+
+Returns: **auth**
+
+```
+ok:true
+name:string			// user name
+apiId:string		// user API ID
+token:string		// user token
+auth:number			// authorization level
+```
+
+Returns: **auth**
+
+```
+ok:false
+msg:string			// error string
+e:object 			// runtime errors
+```
+
+#### app.user.register
+
+Register and Login User
+
+`{name:string,password:string}`
+
+Returns: **auth**
+
+```
+ok:true
+name:string			// user name
+apiId:string		// user API ID
+token:string		// user token
+auth:number			// authorization level
+```
+
+Returns: **auth.user.register**
+
+```
+ok:false
+msg:string			// error string
+e:object 			// runtime errors
+```
+
+#### app.user.logout
+
+Destroy user session
+
+`{}`
+
+Requires: auth
+
+Returns: **app.user.logout**
+
+```
+ok:boolean
+```
+
+#### app.user.email.set
+
+Set user's email
+
+`{email:string}`
+
+Requires: auth
+
+Returns: **app.user.email.get**
+
+```
+ok:true,
+```
+
+Returns: **app.user.email.get**
+
+```
+ok:false,
+msg: string			// error string
+?e: object 			// runtime errors
+```
+
+#### app.user.email.get
+
+Get user's email
+
+`{}`
+
+Requires: auth
+
+Returns: **app.user.email.get**
+
+```
+ok:true,
+email:string
+```
+
+Returns: **app.user.email.get**
+
+```
+ok:false
+msg: string			// error string
+?e: object 			// runtime errors
+```
+
+#### app.user.password.set
+
+Set user's password
+
+`{password:string}`
+
+Requires: auth
+
+Returns: **app.user.password.set**
+
+```
+ok:boolean
+?e:object 			// runtime errors
+```
+
+#### app.user.location.get
+#### app.user.location.set
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
@@ -61,4 +274,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 * [SemVer](https://semver.org/)
 * [Good Readme](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2)
-

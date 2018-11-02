@@ -49,6 +49,7 @@ module.exports = function(data) {
 								name:login.user.name,
 							}
 						});
+						this.App.LOG('D',this.name + ': '+ this.$state.user.auth.name);
 
 					}
 					resolve();
@@ -56,9 +57,9 @@ module.exports = function(data) {
 				})
 				.catch(e=>{
 
-					this.App.LOG('E','this.App.AUTH.userLogin');
+					this.App.LOG('E','this.app.user.login');
 					this.App.LOG('E',e,true);
-					this.$state.socket.emit(socketName,{ok:false,msg:'error in '+socketName,e:e});
+					this.$state.socket.emit('auth',{ok:false,msg:'error in '+this.name,e:e});
 					resolve();
 
 				});
