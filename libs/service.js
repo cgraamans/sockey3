@@ -30,7 +30,7 @@ export class Service {
 			}
 
 			// init App & router
-			if(this.DB) this.App = new App(this.DB,this.options);
+			if(this.DB) this.App = new App(this.DB,this.io,this.options);
 			if(this.App) this.Router = new Router(this.DB, this.App, this.options);
 
 		} catch(e){

@@ -1,10 +1,11 @@
 export default class App {
 
-		constructor(DB,options){
+		constructor(DB,IO,options){
 
 			try {
 
 				this.DB = DB;
+				this.io = IO;
 				this.options = options;
 
 				this.SHA256 = require('crypto-js/sha256');
